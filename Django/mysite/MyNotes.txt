@@ -1,5 +1,6 @@
 Working Django From Docs
 
+
 There are files when you created the django project for the first time
 
 manage.py : A command-line utility that lets yoy interact with this Django project in various ways.
@@ -25,3 +26,49 @@ a blog system, a database of public records or a small poll app.
 A project is a collection of configuration and apps for a particular website. 
 A project can contain multiple apps. An app can be in multiple projects.
 
+When to use include()
+
+You should always use include() when you include other URL patterns. admin.site.urls is the only exception to this.
+
+The path() function is passed four arguments, two required: route and view, and two optional: kwargs, and name. 
+At this point, it’s worth reviewing what these arguments are for.
+
+Use of URls in Django 
+Apps and Projects are different things we have a app named polls and Django have a system to take everything in Order
+so in our app if we want to reach we need a URL but... Let me give a example
+So our app named polls we can add,delete and update(Lets think polls have this  functionaries) ne can't reach different 
+functions in one URL like so we use(mostly) polls/add or polls/delete so for every function that app have have different function
+Django find a solution to make more tidy order let us to create the URLs in our app(We don't have to of course) and we only include the 
+URL the project to access everything in our app.
+
+
+
+
+
+Part 2
+
+Writing first Django Apps
+
+
+By default the configuration uses SQLLite. 
+
+
+For databases other than SQLite
+
+If you’re using a database besides SQLite, make sure you’ve created a database by this point. Do that with “CREATE DATABASE database_name;” within your database’s interactive prompt.
+
+Also make sure that the database user provided in mysite/settings.py has “create database” privileges. This allows automatic creation of a test database which will be needed in a later tutorial.
+
+If you’re using SQLite, you don’t need to create anything beforehand - the database file will be created automatically when it is needed.
+
+By default, INSTALLED_APPS contains the following apps, all of which come with Django:
+
+django.contrib.admin – The admin site. You’ll use it shortly.
+django.contrib.auth – An authentication system.
+django.contrib.contenttypes – A framework for content types.
+django.contrib.sessions – A session framework.
+django.contrib.messages – A messaging framework.
+django.contrib.staticfiles – A framework for managing static files.
+
+
+Creating models
