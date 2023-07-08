@@ -72,3 +72,49 @@ django.contrib.staticfiles – A framework for managing static files.
 
 
 Creating models
+
+A model is the single, definitive source of information about your data. 
+It contains the essential fields and behaviors of the data you’re storing. Django follows the DRY Principle. 
+The goal is to define your data model in one place and automatically derive things from it.
+
+We'll create two models Question and Choice :
+A Question has a question and a publication date.
+A Choice has two filed the text of the choice and a vote tally Each Choice associated with a Question
+
+Each model is represented by a class that subclasses django.db.models.Model.
+Each model has a number of class variables, each of which represents a database field in the model
+
+
+
+Activating Models 
+
+Philosophy
+
+Django apps are “pluggable”: You can use an app in multiple projects, and you can distribute apps, because 
+they don’t have to be tied to a given Django installation.
+
+
+To include the app in our project we need to add a reference to its configuration class in hte INSTALLED_APPS
+setting. The PollsConfig class in the polls/apps.py file 
+
+Now Django knows to include the polls app
+
+python manage.py makemigrations polls
+
+By runnig makemigrations you are telling Django that you have made some changes to your models 
+
+The three step guide to making model changes
+
+1- Change your models(in models.py)
+2- run python manage.py makemigrations to create migrations for those changes
+3- run python manage.py migrate to apply those changes to the database
+
+
+Playing with the API
+
+
+Lets's hop into the interactive Python shell and play around with free API Django gives you 
+
+python manage.py shell
+
+
