@@ -15,7 +15,7 @@ class Customer(models.Model):
     
     def __str__(self) -> str:#To see the name in database when created 
         return self.name
-    
+   
     
 class Product(models.Model):
     CATEGORY = (
