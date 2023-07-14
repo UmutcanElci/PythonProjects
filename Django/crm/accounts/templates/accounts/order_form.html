@@ -10,7 +10,11 @@
             <form action ="" method ="POST">
             
                 {% csrf_token  %}
+                {{formset.management_from}}
+                {%for form in formset%}
                 {{form}}
+                <hr>
+                {% endfor %}
             
                 <input class="btn btn-info"type = "submit" name = "Submit">
             
