@@ -1,7 +1,6 @@
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    path("",name="index"),
-    path("<str:task_title>/",name="list"),
-    path("<str:task_title>/<str:task_name>/",name="task")
+    path("register.html", views.register_user,name="register"),
 ]
