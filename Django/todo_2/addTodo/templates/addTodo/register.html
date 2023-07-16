@@ -1,3 +1,7 @@
+{% extends 'addTodo/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
 <form method="post">
   {% csrf_token %}
    {% if messages%}
@@ -7,3 +11,4 @@
  
   <button type="submit">Register</button>
 </form>
+{% endblock %}

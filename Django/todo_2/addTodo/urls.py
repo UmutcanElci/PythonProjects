@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
+from django.conf.urls import static
 
 urlpatterns = [
-    path("register.html", views.register_user,name="register"),
+    path("home",views.home,name="home"),
+    path("register", views.register_user,name="register"),
 ]
