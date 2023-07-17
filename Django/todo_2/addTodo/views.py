@@ -1,12 +1,21 @@
 from django.shortcuts import render,redirect
 from .forms import RegistrationForm
 from django.contrib import messages
+from rest_framework.viewsets import ModelViewSet
+from .models import *
 
 
 
 
 
 # Create your views here.
+
+def addList(request):
+    queryset = ToDoList.objects.all()
+    context = {'queryset': queryset}
+    return render(request,'addTodo/lists.html',context)
+
+
 def home(request):
     return render(request,'addTodo/home.html')
 
