@@ -10,4 +10,7 @@ class RegistrationForm(UserCreationForm):
         fields = ['username','email'] # Form da Girilecek alanları oluşturur 
         
 
-    
+class AddToDoList(ModelForm):
+    class Meta:
+        model = ToDoList
+        fields = ['task_title','task_category']

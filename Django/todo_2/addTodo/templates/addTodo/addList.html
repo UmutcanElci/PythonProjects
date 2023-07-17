@@ -1,0 +1,14 @@
+{% extends 'addTodo/base.html' %}
+{% block title %}Add List{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{%url "addList"%}">
+    {% csrf_token %}
+
+    {{form}}
+    
+    <button type="submit">Save</button>
+
+</form>
+{% endblock %}

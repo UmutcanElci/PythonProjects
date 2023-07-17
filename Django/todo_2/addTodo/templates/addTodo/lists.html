@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ToDo List</title>
-</head>
-<body>
-  <h1>ToDo List</h1>
+
+{% extends 'addTodo/base.html' %}
+{% block title %}Add List{% endblock %}
+
+{% block content %}
 
   <ul>
     {% for item in queryset %}
       <li>{{ item.task_title }}</li>
     {% endfor %}
   </ul>
-</body>
-</html>
+
+{% endblock %}

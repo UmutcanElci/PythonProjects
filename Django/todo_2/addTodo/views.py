@@ -4,20 +4,31 @@ from django.contrib import messages
 from rest_framework.viewsets import ModelViewSet
 from .models import *
 
-
+from .forms import *
 
 
 
 # Create your views here.
+def home(request):
+    return render(request,'addTodo/home.html')
 
-def addList(request):
+def seeList(request):
     queryset = ToDoList.objects.all()
     context = {'queryset': queryset}
     return render(request,'addTodo/lists.html',context)
 
+def addTodoList(request):
+    if request.method == "POST":
+        form = AddToDoList(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect("addTodo/home.html")
+    else:
+        form = AddToDoList()
+    
+    context = {"form": form}
+    return render(request, 'addTodo/addList.html', context)
 
-def home(request):
-    return render(request,'addTodo/home.html')
 
 def register_user(request):
     if request.method == "POST":
