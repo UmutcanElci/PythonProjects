@@ -30,6 +30,26 @@ def addTodoList(request):
     return render(request, 'addTodo/addList.html', context)
 
 
+def addTodoTask(request):
+    if request.method == "POST":
+        form = AddToDoTask(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect("addTodo/home.html")
+    else:
+        form = AddToDoTask()
+        
+    context = {"form": form}
+    return render(request,'addTodo/addTask.html',context)
+
+def seeTasks(request, todo_list_name):
+    todo_list = ToDoList.objects.get(task_title=todo_list_name)
+    queryset = ToDoTask.objects.filter(todo_list=todo_list)
+    context = {'queryset': queryset}
+    return render(request, 'addTodo/tasks.html', context)
+
+    
+
 def register_user(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)

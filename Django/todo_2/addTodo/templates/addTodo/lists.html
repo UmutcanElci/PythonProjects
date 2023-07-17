@@ -4,10 +4,11 @@
 
 {% block content %}
 
-  <ul>
-    {% for item in queryset %}
-      <li>{{ item.task_title }}</li>
-    {% endfor %}
-  </ul>
+<ul>
+  {% for item in queryset %}
+    <li><a href="{% url 'tasks' todo_list_name=item.task_title %}">{{ item.task_title }}</a></li>
+  {% endfor %}
+</ul>
+
 
 {% endblock %}

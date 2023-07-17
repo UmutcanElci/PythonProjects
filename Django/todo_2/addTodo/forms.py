@@ -14,3 +14,10 @@ class AddToDoList(ModelForm):
     class Meta:
         model = ToDoList
         fields = ['task_title','task_category']
+        
+        
+class AddToDoTask(ModelForm):
+    class Meta:
+        model = ToDoTask
+        fields = ['task_name','task_description','todo_list']
+        

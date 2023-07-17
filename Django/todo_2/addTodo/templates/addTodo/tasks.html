@@ -1,0 +1,13 @@
+ {% extends 'addTodo/base.html' %}
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+ <ul>
+    {% for item in queryset %}
+    <li>{{ item.task_name}}</li>
+    <li>{{ item.task_description}}</li>
+    <li>{{ item.task_complete}}</li>
+    <li>{{ item.created}}</li>
+    {% endfor %}
+  </ul>
+  {% endblock %}
