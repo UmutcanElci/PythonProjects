@@ -8,6 +8,12 @@
     <li>{{ item.task_description}}</li>
     <li>{{ item.task_complete}}</li>
     <li>{{ item.created}}</li>
+    <li>
+      <a href="{% url 'UpdateTodoTask' pk=item.pk %}">Update</a>
+    </li>
+    <li>
+      <a href="{% url 'DeleteTodoTask' pk=item.pk %}">Delete</a>
+    </li>
     {% endfor %}
   </ul>
   {% endblock %}

@@ -1,14 +1,22 @@
-
 {% extends 'addTodo/base.html' %}
-{% block title %}Add List{% endblock %}
+{% block title %}Lists{% endblock %}
 
 {% block content %}
-
-<ul>
+<div class="row">
   {% for item in queryset %}
-    <li><a href="{% url 'tasks' todo_list_name=item.task_title %}">{{ item.task_title }}</a></li>
+  <div class="col-md-4 mb-4">
+    <div class="card bg-dark">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.task_title }}</h5>
+        {%for task in item.todotask_set.all%}
+        <p class="card-text">{{task.task_name}}</p>
+        {%endfor%}
+        <a class="btn btn-sm btn-info"href="{% url 'tasks' todo_list_name=item.task_title %}" class="card-link ">View Tasks</a>
+        <a class="btn btn-sm btn-success"href="{% url 'UpdateTodoList' pk=item.pk %}" class="card-link">Update List</a>
+        <a class="btn btn-sm btn-danger"href="{% url 'DeleteTodoTask' pk=item.pk %}" class="card-link">Delete</a>
+      </div>
+    </div>
+  </div>
   {% endfor %}
-</ul>
-
-
+</div>
 {% endblock %}
