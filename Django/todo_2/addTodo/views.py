@@ -1,7 +1,9 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from .forms import RegistrationForm
 from django.contrib import messages
-from django.views.generic.edit import UpdateView,DeleteView
+from django.views.generic.edit import UpdateView,DeleteView,CreateView
 from django.urls import reverse,reverse_lazy
 from .models import *
 
@@ -18,40 +20,50 @@ def seeList(request):
     context = {'queryset': queryset}
     return render(request,'addTodo/lists.html',context)
 
-def addTodoList(request):
-    if request.method == "POST":
-        form = AddToDoList(request.POST)
-        if form.is_valid():
-            form.save()
-            redirect("addTodo/home.html")
-    else:
-        form = AddToDoList()
-    
-    context = {"form": form}
-    return render(request, 'addTodo/addList.html', context)
+class CreateTodoList(CreateView):
+    model = ToDoList
+    fields = ['task_title', 'task_category']
+    template_name = 'addTodo/addList.html'
+    success_url = reverse_lazy('lists')
 
+    def form_valid(self, form):
+        task_title = form.cleaned_data['task_title']
+        
+        if ToDoList.objects.filter(task_title=task_title).exists():
+            form.add_error('task_title', 'A list with this title already exists.')
+            return self.form_invalid(form)
+    
+        return super().form_valid(form)
+    
+    
 class UpdateTodoList(UpdateView):
     model = ToDoList
     fields = ['task_title','task_category']
-    template_name = "addTodo/addList.html"
+    template_name = 'addTodo/update_confirmation.html'
     success_url = reverse_lazy('lists')
+    
+    def form_valid(self, form):
+        task_title = form.cleaned_data['task_title']
+        
+        if ToDoList.objects.filter(task_title=task_title).exists():
+            form.add_error('task_title', 'A list with this title already exists.')
+            return self.form_invalid(form)
+    
+        return super().form_valid(form)
+    
 
 class DeleteTodoList(DeleteView):
     model = ToDoList
     success_url = reverse_lazy('lists')
     template_name = 'addTodo/delete_confirmation.html'  
 
-def addTodoTask(request):
-    if request.method == "POST":
-        form = AddToDoTask(request.POST)
-        if form.is_valid():
-            form.save()
-            redirect("addTodo/home.html")
-    else:
-        form = AddToDoTask()
-        
-    context = {"form": form}
-    return render(request,'addTodo/addTask.html',context)
+class CreateTodoTask(CreateView):
+    model = ToDoTask
+    fields = ['task_name','task_description','todo_list']
+    template_name = "addTodo/addTask.html"
+    def get_success_url(self) -> str:
+        todo_list_name = self.object.todo_list.task_title
+        return reverse('tasks', kwargs={'todo_list_name':todo_list_name})
 
 
 class UpdateTodoTask(UpdateView):
@@ -68,7 +80,8 @@ class UpdateTodoTask(UpdateView):
 class DeleteTodoTask(DeleteView):
     model = ToDoTask
     success_url = reverse_lazy('lists')
-    template_name = 'addTodo/delete_confirmation.html'  
+    template_name = 'addTodo/delete_confirmation.html' 
+     
 
     
 

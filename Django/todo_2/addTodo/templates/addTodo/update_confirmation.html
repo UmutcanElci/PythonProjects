@@ -1,0 +1,16 @@
+{% extends 'addTodo/base.html' %}
+{% block title %}Update List{% endblock %}
+
+{% block content %}
+
+  <h1>Update List</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Save List</button>
+  </form>
+
+  <a href="{% url 'lists' %}">Back to Lists</a>
+
+{% endblock %}

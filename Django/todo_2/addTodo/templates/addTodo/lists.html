@@ -13,7 +13,7 @@
         {%endfor%}
         <a class="btn btn-sm btn-info"href="{% url 'tasks' todo_list_name=item.task_title %}" class="card-link ">View Tasks</a>
         <a class="btn btn-sm btn-success"href="{% url 'UpdateTodoList' pk=item.pk %}" class="card-link">Update List</a>
-        <a class="btn btn-sm btn-danger"href="{% url 'DeleteTodoTask' pk=item.pk %}" class="card-link">Delete</a>
+        <a class="btn btn-sm btn-danger"href="{% url 'DeleteTodoList' pk=item.pk %}" class="card-link">Delete</a>
       </div>
     </div>
   </div>

@@ -7,8 +7,8 @@ urlpatterns = [
     path("home",views.home,name="home"),
     path("register", views.register_user,name="register"),
     path("lists",views.seeList,name="lists"),
-    path("addList",views.addTodoList,name="addList"),
-    path("addTask",views.addTodoTask,name="addTask"),
+    path("addList",views.CreateTodoList.as_view(),name="addList"),
+    path("addTask",views.CreateTodoTask.as_view(),name="addTask"),
     path("<str:todo_list_name>/tasks",views.seeTasks,name="tasks"),
     
     path("UpdateTodoList/<int:pk>",UpdateTodoList.as_view(),name="UpdateTodoList"),

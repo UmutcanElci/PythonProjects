@@ -8,16 +8,8 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username','email'] # Form da Girilecek alanları oluşturur 
-        
-
-class AddToDoList(ModelForm):
-    class Meta:
-        model = ToDoList
-        fields = ['task_title','task_category']
-        
-        
-class AddToDoTask(ModelForm):
-    class Meta:
-        model = ToDoTask
-        fields = ['task_name','task_description','todo_list']
+    def init(self, args, **kwargs):
+        super(RegistrationForm, self).init(args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'col-md-6'
         
