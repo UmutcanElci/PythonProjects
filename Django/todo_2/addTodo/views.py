@@ -1,14 +1,13 @@
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
+from typing import Set
+from django.contrib import messages
 from django.shortcuts import render,redirect
 from .forms import RegistrationForm
-from django.contrib import messages
 from django.views.generic.edit import UpdateView,DeleteView,CreateView
+from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import reverse,reverse_lazy
 from .models import *
-
 from .forms import *
-
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -35,7 +34,7 @@ class CreateTodoList(CreateView):
     
         return super().form_valid(form)
     
-    
+
 class UpdateTodoList(UpdateView):
     model = ToDoList
     fields = ['task_title','task_category']
@@ -85,7 +84,7 @@ class DeleteTodoTask(DeleteView):
 
     
 
-
+#@login_required(login_url="/login")
 def seeTasks(request, todo_list_name):
     todo_list = ToDoList.objects.get(task_title=todo_list_name)
     queryset = ToDoTask.objects.filter(todo_list=todo_list)
@@ -94,16 +93,35 @@ def seeTasks(request, todo_list_name):
 
     
 
-def register_user(request):
-    if request.method == "POST":
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            print("Good")
-    else:
-        form = RegistrationForm()
+class RegisterUser(CreateView):
+    form_class = RegistrationForm
+    template_name = "addTodo/register.html"
+
+    def form_valid(self, form):
         
+        form.instance.password = make_password(form.cleaned_data['password'])
+        
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("login")
+
+
+class LoginUser(LoginView):
+    template_name="addTodo/login.html"
+    redirect_authenticated_user = True
+    def get_success_url(self) -> str:
+        print("Good")
+        return reverse_lazy('lists')
     
-    return render(request, 'addTodo/register.html',{"form":form})
-            
-        
+    def form_invalid(self, form):
+     print(form.errors)
+     messages.error(self.request, "Invalid username or password")
+     return self.render_to_response(self.get_context_data(form=form))
+    
+    
+class LogoutUser(LogoutView):
+    template_name = "addTodo/logout_confirm.html"
+    redirect_field_name = "login"
+    print("Logout")
+    reverse_lazy("login")

@@ -5,7 +5,7 @@ from .views import *
 
 urlpatterns = [
     path("home",views.home,name="home"),
-    path("register", views.register_user,name="register"),
+    path("register",RegisterUser.as_view(),name="register"),
     path("lists",views.seeList,name="lists"),
     path("addList",views.CreateTodoList.as_view(),name="addList"),
     path("addTask",views.CreateTodoTask.as_view(),name="addTask"),
@@ -16,4 +16,8 @@ urlpatterns = [
     
     path("UpdateTodoTask/<int:pk>/",UpdateTodoTask.as_view(),name="UpdateTodoTask"),
     path("DeleteTodoTask/<int:pk>/",DeleteTodoTask.as_view(),name="DeleteTodoTask"),
+    
+    path("login/", LoginUser.as_view(), name="login"),
+    path("logout/",LogoutUser.as_view(),name="logout"),
+   
 ]
