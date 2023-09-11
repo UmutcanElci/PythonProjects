@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import csv
 import time
 
-driver = webdriver.Edge()
+driver = webdriver.Chrome(executable_path="C:\\Users\\Malat\\Desktop\\chromedriver-win64\\chromedriver.exe")
 
 driver.get('https://www.google.com/finance/quote/ZOREN:IST?hl=tr')
 
@@ -21,7 +21,7 @@ try:
         
         
         
-        
+        time.sleep(60)
         driver.refresh()
 
 except KeyboardInterrupt:
