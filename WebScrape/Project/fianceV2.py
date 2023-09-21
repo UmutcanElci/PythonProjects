@@ -7,7 +7,7 @@ import time
 import os
 
 options = webdriver.ChromeOptions()
-options.add_argument('--user-data-dir=C:\\Users\\Malat\\AppData\\Local\\Google\\Chrome\\User Data')
+options.add_argument('--user-data-dir=C:\\Users\\{Computer Name}\\AppData\\Local\\Google\\Chrome\\User Data')
 driver = webdriver.Chrome(options=options)
 url = "https://www.google.com/finance/portfolio/watchlist?hl=tr"
 driver.get(url)
