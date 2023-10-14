@@ -61,14 +61,25 @@ def choose_stock(stock):
     canvas.draw()
 
 def stock_median():
+    selected_stock_value = selected_stock.get()  
     ax.clear()
-    data =  yf.download(selected_stock, start=start_date, end=end_date)['Adj Close']
+    data = yf.download(selected_stock_value, start=start_date, end=end_date)['Adj Close']
     median = np.median(data)
-    plt.plot(median,drawstyle='steps')
+    plt.plot(data.index, data, label=selected_stock_value, drawstyle='steps', color='b')
+    ax.axhline(median, color='r', linestyle='--', label=f"Median: {median}")
+    plt.legend(loc='upper left')
     canvas.draw()
     
     
-
+def stock_mean():
+    selected_stock_value = selected_stock.get()  
+    ax.clear()
+    data = yf.download(selected_stock_value, start=start_date, end=end_date)['Adj Close']
+    mean = np.mean(data)
+    plt.plot(data.index, data, label=selected_stock_value, drawstyle='steps', color='b')
+    ax.axhline(mean, color='r', linestyle='--', label=f"Mean: {mean}")
+    plt.legend(loc='upper left')
+    canvas.draw()
 
 
 frame = Frame(window)
@@ -91,8 +102,11 @@ selected_stock = StringVar()
 for stock in ticks:
     Radiobutton(frame, text=stock,variable=selected_stock, value=stock, command=lambda: choose_stock(selected_stock.get())).pack()
 
-median_button = Button(frame,variable=selected_stock,text="Median",command=stock_median)
+median_button = Button(frame, text="Median", command=stock_median)
 median_button.pack()
+
+mean_button = Button(frame, text="Mean", command=stock_mean)
+mean_button.pack()
 
 frame.pack()
 window.mainloop()
