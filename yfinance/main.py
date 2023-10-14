@@ -1,14 +1,14 @@
 import yfinance as yf
 import datetime as datetime
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg #To integrated plots to tkinter
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg , NavigationToolbar2Tk #To integrated plots to tkinter
 from matplotlib.widgets import RadioButtons
 import numpy as np
 from tkinter import *
 #import os
 #import pandas as pd
 #from openpyxl.workbook import Workbook
-# All stocks for different actions
+
 
 
 ticks = ["TTRAK.IS", "ERSU.IS", "DOAS.IS", "AKSA.IS", "CEMTS.IS", "EREGL.IS", "PETKM.IS", "AEFES.IS", "ASELS.IS", "INDES.IS"]
@@ -36,20 +36,39 @@ AEFES_data = yf.download("AEFES.IS", start=start_date, end=end_date)['Adj Close'
 ASELS_data = yf.download("ASELS.IS", start=start_date, end=end_date)['Adj Close']
 INDES_data = yf.download("INDES.IS", start=start_date, end=end_date)['Adj Close']
 
-def graph():
+
 #All stocks in one plot
-  plt.plot(TTRAK_data.index, TTRAK_data, label="TTRAK.IS", drawstyle='steps',color='b')
-  plt.plot(ERSU_data.index, ERSU_data, label="ERSU.IS", drawstyle='steps',color='orange')
-  plt.plot(DOAS_data.index, DOAS_data, label="DOAS.IS", drawstyle='steps',color='g')
-  plt.plot(AKSA_data.index, AKSA_data, label="AKSA.IS", drawstyle='steps',color='r')
-  plt.plot(CEMTS_data.index, CEMTS_data, label="CEMTS.IS", drawstyle='steps',color='k')
-  plt.plot(EREGL_data.index, EREGL_data, label="EREGL.IS", drawstyle='steps',color='purple')
-  plt.plot(PETKM_data.index, PETKM_data, label="PETKM.IS", drawstyle='steps',color='pink')
-  plt.plot(AEFES_data.index, AEFES_data, label="AEFES.IS", drawstyle='steps',color='brown')
-  plt.plot(ASELS_data.index, ASELS_data, label="ASELS.IS", drawstyle='steps',color='gray')
-  plt.plot(INDES_data.index, INDES_data, label="INDES.IS", drawstyle='steps',color='y')
-  plt.legend(loc='upper left')
-  canvas.draw()
+def graph_all():
+    ax.clear() # Clear the graph every time the function called 
+    plt.plot(TTRAK_data.index, TTRAK_data, label="TTRAK.IS", drawstyle='steps',color='b')
+    plt.plot(ERSU_data.index, ERSU_data, label="ERSU.IS", drawstyle='steps',color='orange')
+    plt.plot(DOAS_data.index, DOAS_data, label="DOAS.IS", drawstyle='steps',color='g')
+    plt.plot(AKSA_data.index, AKSA_data, label="AKSA.IS", drawstyle='steps',color='r')
+    plt.plot(CEMTS_data.index, CEMTS_data, label="CEMTS.IS", drawstyle='steps',color='k')
+    plt.plot(EREGL_data.index, EREGL_data, label="EREGL.IS", drawstyle='steps',color='purple')
+    plt.plot(PETKM_data.index, PETKM_data, label="PETKM.IS", drawstyle='steps',color='pink')
+    plt.plot(AEFES_data.index, AEFES_data, label="AEFES.IS", drawstyle='steps',color='brown')
+    plt.plot(ASELS_data.index, ASELS_data, label="ASELS.IS", drawstyle='steps',color='gray')
+    plt.plot(INDES_data.index, INDES_data, label="INDES.IS", drawstyle='steps',color='y')
+    plt.legend(loc='upper left')
+    canvas.draw() 
+
+
+def choose_stock(stock):
+    ax.clear()
+    data = yf.download(stock,start=start_date,end=end_date)['Adj Close']
+    plt.plot(data.index, data, label=stock, drawstyle='steps')
+    canvas.draw()
+
+def stock_median():
+    ax.clear()
+    data =  yf.download(selected_stock, start=start_date, end=end_date)['Adj Close']
+    median = np.median(data)
+    plt.plot(median,drawstyle='steps')
+    canvas.draw()
+    
+    
+
 
 
 frame = Frame(window)
@@ -60,7 +79,20 @@ label.pack()
 canvas = FigureCanvasTkAgg(fig,master=window)
 canvas.get_tk_widget().pack()
 
-button = Button(frame,text = "Graph",command= graph).pack()
+toolbar = NavigationToolbar2Tk(canvas,frame,pack_toolbar=False) # Call matplotlib default toolbar ery
+toolbar.update()
+toolbar.pack(anchor="w",fill=X)
+
+#Buttons
+graph_all_button = Button(frame,text = "Graph",command= graph_all).pack()
+
+
+selected_stock = StringVar()
+for stock in ticks:
+    Radiobutton(frame, text=stock,variable=selected_stock, value=stock, command=lambda: choose_stock(selected_stock.get())).pack()
+
+median_button = Button(frame,variable=selected_stock,text="Median",command=stock_median)
+median_button.pack()
 
 frame.pack()
 window.mainloop()
