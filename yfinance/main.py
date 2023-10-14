@@ -18,10 +18,10 @@ end_date = datetime.date(2022, 12, 31)
 
 window = Tk()
 window.title("Stocks")
-window.geometry("600x400")
+window.geometry("800x600")
 
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12,8))
 
 
 # All stocks in a different variable
@@ -82,6 +82,26 @@ def stock_mean():
     canvas.draw()
 
 
+
+def graph_week(week):
+    start_date = datetime.date(2022, 1, 3) + datetime.timedelta(weeks= week - 1)
+    end_date = start_date + datetime.timedelta(days=5)
+    selected_stock_value = selected_stock.get()
+    
+    ax.clear()
+    data = yf.download(selected_stock_value,start=start_date,end=end_date)['Adj Close']
+    plt.plot(data.index, data, label=selected_stock_value, drawstyle='steps')
+    plt.legend(loc='upper left')
+
+    canvas.draw()
+    
+def get_week_data():
+    week = int(week_entry.get()) 
+    graph_week(week)
+
+def comprasion():
+    pass
+
 frame = Frame(window)
 label = Label(text="Stocks")
 label.pack()
@@ -94,19 +114,30 @@ toolbar = NavigationToolbar2Tk(canvas,frame,pack_toolbar=False) # Call matplotli
 toolbar.update()
 toolbar.pack(anchor="w",fill=X)
 
+#label
+week_label = Label(frame, text="Week :")
+week_label.pack()
+week_entry = Entry(frame)
+week_entry.pack()
+
+
 #Buttons
 graph_all_button = Button(frame,text = "Graph",command= graph_all).pack()
 
 
 selected_stock = StringVar()
 for stock in ticks:
-    Radiobutton(frame, text=stock,variable=selected_stock, value=stock, command=lambda: choose_stock(selected_stock.get())).pack()
+    Radiobutton(frame, text=stock,variable=selected_stock,value=stock, command=lambda: choose_stock(selected_stock.get())).pack(anchor='w',side=RIGHT)
 
 median_button = Button(frame, text="Median", command=stock_median)
-median_button.pack()
+median_button.pack(side=LEFT)
 
 mean_button = Button(frame, text="Mean", command=stock_mean)
-mean_button.pack()
+mean_button.pack(side=LEFT)
+
+week_button = Button(frame,text="Week",command=get_week_data)
+week_button.pack(side=LEFT)
+
 
 frame.pack()
 window.mainloop()
