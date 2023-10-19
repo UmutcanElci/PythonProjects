@@ -60,6 +60,12 @@ def choose_stock(stock):
     plt.plot(data.index, data, label=stock, drawstyle='steps')
     canvas.draw()
 
+
+def on_stock_selected(event):
+    selected_stock_value = selected_stock.get()
+    choose_stock(selected_stock_value)
+    
+
 def stock_median():
     selected_stock_value = selected_stock.get()  
     ax.clear()
@@ -92,7 +98,6 @@ def graph_week(week):
     data = yf.download(selected_stock_value,start=start_date,end=end_date)['Adj Close']
     plt.plot(data.index, data, label=selected_stock_value, drawstyle='steps')
     plt.legend(loc='upper left')
-
     canvas.draw()
     
 def get_week_data():
@@ -126,9 +131,9 @@ graph_all_button = Button(frame,text = "Graph",command= graph_all).pack()
 
 
 selected_stock = StringVar()
-for stock in ticks:
-    Radiobutton(frame, text=stock,variable=selected_stock,value=stock, command=lambda: choose_stock(selected_stock.get())).pack(anchor='w',side=RIGHT)
-
+menu = OptionMenu(frame, selected_stock, *ticks)
+menu.pack(anchor='w', side=RIGHT)
+menu.bind("<Configure>", on_stock_selected) 
 median_button = Button(frame, text="Median", command=stock_median)
 median_button.pack(side=LEFT)
 
