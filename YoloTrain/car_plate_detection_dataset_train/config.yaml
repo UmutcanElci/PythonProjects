@@ -1,0 +1,8 @@
+
+path: C:\\Users\\Malat\\OneDrive\\Masaüstü\\dataset
+
+train: images/train
+val: images/train
+
+nc: 1  
+names: ['car_plate']  
